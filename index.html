@@ -342,7 +342,7 @@ function renderPage(p, pi) {
     h = '<div class="submit-area"><h3>'+p.name+' 答题完毕</h3>';
     h += '<p>请检查作答，确认无误后提交。提交后不可修改，答题数据将保存至开发空间。</p>';
     if (done) {
-      h += '<button class="submit-btn-big done" disabled>✓ 已提交 —— '+p.name+'</button>';
+      h += '<button class="submit-btn-big done" onclick="doSubmit('+p.n+')">✓ 重新提交'+p.name+'</button>';
     } else {
       h += '<button class="submit-btn-big '+cls+'" onclick="doSubmit('+p.n+')">✓ 提交'+p.name+'</button>';
     }
@@ -502,7 +502,14 @@ function doSubmit(n) {
   var sn = ['','第一大题','第二大题','第三大题'][n];
   var apiSec = ['','pretest','correction','posttest'][n];
   
-  // Collect answers for this section
+  var alreadySubmitted = st.sub[sk];
+  
+  // 如果已经提交过，弹出确认提示
+  if (alreadySubmitted) {
+    if (!confirm(sn + ' 已经提交过。确定要重新提交吗？\n\n重新提交将覆盖之前的答题数据。')) {
+      return;
+    }
+  }
   var secAns = {};
   for (var k in st.ans) {
     var qi = parseInt(k.substring(1));

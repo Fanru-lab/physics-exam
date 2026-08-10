@@ -120,6 +120,62 @@ def submit(section):
         return jsonify({'error': str(e)}), 500
 
 
+# ===== 数据同步接口（供本地 sync.py 调用） =====
+
+@app.route('/api/sync/list_students')
+def list_students():
+    """列出所有学生及其答题数据"""
+    students = []
+    if os.path.exists(STUDENT_DATA_DIR):
+        for folder in os.listdir(STUDENT_DATA_DIR):
+            folder_path = os.path.join(STUDENT_DATA_DIR, folder)
+            if os.path.isdir(folder_path):
+                sections = []
+                # 扫描 answers 目录
+                answers_dir = os.path.join(folder_path, 'answers')
+                if os.path.exists(answers_dir):
+                    for sub in os.listdir(answers_dir):
+                        sub_path = os.path.join(answers_dir, sub)
+                        if os.path.isdir(sub_path):
+                            for f in os.listdir(sub_path):
+                                if f.endswith('.json'):
+                                    sections.append(f'answers/{sub}/{f}')
+                # 扫描 reports 目录
+                reports_dir = os.path.join(folder_path, 'reports')
+                if os.path.exists(reports_dir):
+                    for f in os.listdir(reports_dir):
+                        if f.endswith('.docx'):
+                            sections.append(f'reports/{f}')
+                
+                # 尝试从文件夹名提取姓名学号
+                parts = folder.rsplit('_', 1)
+                name = parts[0] if len(parts) >= 2 else folder
+                
+                students.append({
+                    'name': name,
+                    'folder': folder,
+                    'sections': sections
+                })
+    return jsonify({'students': students})
+
+
+@app.route('/api/sync/download')
+def download_file():
+    """下载单个学生文件"""
+    folder = request.args.get('folder', '')
+    section = request.args.get('section', '')
+    
+    if not folder or not section:
+        return jsonify({'error': 'Missing parameters'}), 400
+    
+    filepath = os.path.join(STUDENT_DATA_DIR, folder, section)
+    if not os.path.exists(filepath):
+        return jsonify({'error': 'File not found'}), 404
+    
+    from flask import send_file
+    return send_file(filepath, as_attachment=True)
+
+
 if __name__ == '__main__':
     print('=' * 50)
     print('  电磁感应习题课 - 云后端服务')
