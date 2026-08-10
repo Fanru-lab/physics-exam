@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电磁感应章节习题课 - 登录</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Times New Roman", "SimSun", "宋体", serif;
+  background: linear-gradient(135deg, #e8edf5 0%, #dce3ed 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 48px 44px;
+  width: 420px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+.login-card h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+  letter-spacing: 2px;
+}
+
+.login-card .subtitle {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 36px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #4a90d9;
+  box-shadow: 0 0 0 3px rgba(74,144,217,0.1);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #4a90d9;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  background: #3a7dc9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.login-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.error-msg {
+  color: #d93025;
+  font-size: 13px;
+  margin-top: 12px;
+  display: none;
+}
+
+.error-msg.show { display: block; }
+
+.info-text {
+  font-size: 12px;
+  color: #999;
+  margin-top: 24px;
+}
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <h1>电磁感应章节习题课</h1>
+  <div class="subtitle">—— 测试系统登录 ——</div>
+
+  <div class="form-group">
+    <label>姓名</label>
+    <input type="text" id="studentName" placeholder="请输入您的姓名" autocomplete="off">
+  </div>
+
+  <div class="form-group">
+    <label>学号</label>
+    <input type="text" id="studentId" placeholder="请输入您的学号" autocomplete="off">
+  </div>
+
+  <button class="login-btn" id="loginBtn" onclick="doLogin()">登 录</button>
+  <div class="error-msg" id="errorMsg"></div>
+  <div class="info-text">登录后，您的答题数据将保存在以"姓名_学号"命名的个人文件夹中</div>
+</div>
+
+<script>
+var serverUrl = '';
+
+function doLogin() {
+  var name = document.getElementById('studentName').value.trim();
+  var id = document.getElementById('studentId').value.trim();
+  var err = document.getElementById('errorMsg');
+  var btn = document.getElementById('loginBtn');
+
+  err.classList.remove('show');
+
+  if (!name) {
+    err.textContent = '请输入姓名';
+    err.classList.add('show');
+    return;
+  }
+  if (!id) {
+    err.textContent = '请输入学号';
+    err.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '正在登录...';
+
+  // 调用服务器创建学生文件夹
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/api/login', true);
+  xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+  xhr.timeout = 5000;
+
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      // 服务器创建文件夹成功，跳转到考试页面
+      var params = '?name=' + encodeURIComponent(name) + '&id=' + encodeURIComponent(id);
+      window.location.href = '/index.html' + params;
+    } else {
+      // 服务器不可用，但仍然跳转（离线模式）
+      var params = '?name=' + encodeURIComponent(name) + '&id=' + encodeURIComponent(id);
+      window.location.href = '/index.html' + params;
+    }
+  };
+
+  xhr.onerror = function() {
+    // 服务器未启动，直接跳转
+    var params = '?name=' + encodeURIComponent(name) + '&id=' + encodeURIComponent(id);
+    window.location.href = '/index.html' + params;
+  };
+
+  xhr.ontimeout = function() {
+    var params = '?name=' + encodeURIComponent(name) + '&id=' + encodeURIComponent(id);
+    window.location.href = '/index.html' + params;
+  };
+
+  xhr.send(JSON.stringify({name: name, studentId: id, timestamp: new Date().toISOString()}));
+}
+
+// 回车登录
+document.getElementById('studentId').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('studentName').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('studentId').focus();
+});
+</script>
+</body>
+</html>
