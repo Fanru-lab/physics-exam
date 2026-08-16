@@ -37,46 +37,22 @@ def sync():
             for section_name in s.get('sections', []):
                 parts = section_name.split('/')
                 if len(parts) >= 2:
-                    sec_type = parts[0]  # answers 或 reports
-                    sec_sub = parts[1]   # pretest/correction/posttest 或 报告文件名
+                    sec_type = parts[0]   # answers 或 reports
+                    filename = parts[-1]  # 文件名
                     
-                    if sec_type == 'answers':
-                        dest_dir = os.path.join(local_student, 'answers', sec_sub)
-                        os.makedirs(dest_dir, exist_ok=True)
-                        # 下载答题数据
-                        try:
-                            url = f'{CLOUD_URL}/api/sync/download?folder={s["folder"]}&section={section_name}'
-                            req2 = urllib.request.Request(url)
-                            resp2 = urllib.request.urlopen(req2, timeout=15)
-                            
-                            # 提取文件名
-                            content_disposition = resp2.headers.get('Content-Disposition', '')
-                            filename = section_name.split('/')[-1] + '.json'
-                            if 'filename=' in content_disposition:
-                                filename = content_disposition.split('filename=')[-1].strip('"')
-                            
-                            filepath = os.path.join(dest_dir, filename)
-                            with open(filepath, 'wb') as f:
-                                f.write(resp2.read())
-                            print(f'  ✓ 下载: {section_name} → {filename}')
-                        except urllib.error.HTTPError as e:
-                            print(f'  ✗ 下载失败: {section_name} ({e.code})')
+                    dest_dir = os.path.join(local_student, sec_type)
+                    os.makedirs(dest_dir, exist_ok=True)
                     
-                    elif sec_type == 'reports':
-                        dest_dir = os.path.join(local_student, 'reports')
-                        os.makedirs(dest_dir, exist_ok=True)
-                        try:
-                            url = f'{CLOUD_URL}/api/sync/download?folder={s["folder"]}&section={section_name}'
-                            req2 = urllib.request.Request(url)
-                            resp2 = urllib.request.urlopen(req2, timeout=15)
-                            
-                            filename = section_name.split('/')[-1]
-                            filepath = os.path.join(dest_dir, filename)
-                            with open(filepath, 'wb') as f:
-                                f.write(resp2.read())
-                            print(f'  ✓ 下载: {section_name} → {filename}')
-                        except urllib.error.HTTPError as e:
-                            print(f'  ✗ 下载失败: {section_name} ({e.code})')
+                    try:
+                        url = f'{CLOUD_URL}/api/sync/download?folder={s["folder"]}&section={section_name}'
+                        req2 = urllib.request.Request(url)
+                        resp2 = urllib.request.urlopen(req2, timeout=15)
+                        filepath = os.path.join(dest_dir, filename)
+                        with open(filepath, 'wb') as f:
+                            f.write(resp2.read())
+                        print(f'  [OK] 下载: {section_name}')
+                    except urllib.error.HTTPError as e:
+                        print(f'  [FAIL] 下载失败: {section_name} ({e.code})')
         
         print(f'\n同步完成！数据已保存至: {LOCAL_DIR}')
         
