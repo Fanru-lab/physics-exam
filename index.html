@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>机械能守恒章节·四阶测试问卷</title>
+<title>机械能守恒章节测试</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -17,7 +17,7 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,.08);
 }
-.top-title { font-size: 16px; font-weight: bold; color: #333; }
+.top-title { font-size: 17px; font-weight: bold; color: #333; }
 .top-section { font-size: 14px; color: #4a90d9; font-weight: bold; }
 .top-info { display: flex; align-items: center; gap: 14px; font-size: 13px; color: #666; }
 .student-tag { color: #4a90d9; font-weight: 600; }
@@ -38,20 +38,15 @@ body {
 .pp { display: none; }
 .pp.active { display: block; }
 
-/* 封面/阶段页 */
-.cover { text-align: center; padding: 50px 0; }
+.cover { text-align: center; padding: 60px 0; }
 .cover h2 { font-size: 26px; margin-bottom: 16px; letter-spacing: 2px; }
-.cover .sub { font-size: 16px; color: #555; margin-bottom: 30px; }
-.cover .info { font-size: 14px; color: #555; line-height: 2.2; text-align: left; display: inline-block; }
+.cover .sub { font-size: 15px; color: #555; margin-bottom: 30px; line-height: 2; }
+.cover .tip { font-size: 13px; color: #999; margin-top: 30px; }
 
-/* 题目页 */
-.src { font-size: 11px; color: #2f5496; margin-bottom: 2px; }
-.miscon-tag { font-size: 11px; color: #9c27b0; font-weight: bold; margin-bottom: 10px; }
 .q-num { font-size: 15px; font-weight: bold; margin-bottom: 8px; }
-.q-stem { margin-bottom: 12px; text-align: justify; font-size: 15px; }
+.q-stem { margin-bottom: 14px; text-align: justify; font-size: 15px; }
 
-.tier-title { font-size: 14px; font-weight: bold; color: #333; margin: 14px 0 6px; padding-bottom: 4px; border-bottom: 1px solid #eee; }
-
+/* 选项 */
 .opt {
   display: flex; align-items: flex-start; width: 100%; text-align: left;
   padding: 8px 14px; border: 2px solid #d0d0d0; background: #fafafa;
@@ -60,19 +55,29 @@ body {
 }
 .opt:hover { border-color: #4a90d9; background: #f0f6ff; }
 .opt.selected { border-color: #4a90d9; background: #e3f0ff; box-shadow: 0 0 0 1px #4a90d9; }
+.opt.disabled { pointer-events: none; opacity: .7; }
 .opt .lab { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; min-width: 26px; border: 2px solid #ccc; border-radius: 50%; font-weight: bold; font-size: 13px; margin-right: 10px; margin-top: 2px; color: #555; }
 .opt.selected .lab { background: #4a90d9; color: #fff; border-color: #4a90d9; }
 .opt .txt { flex: 1; }
 
-.conf-group { display: flex; gap: 12px; flex-wrap: wrap; }
+/* 答题卡 */
+.answer-card {
+  border: 2px solid #888; border-radius: 6px; padding: 16px 18px; margin-top: 16px;
+  background: #fcfcfc;
+}
+.answer-card .ac-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #333; }
+.answer-card .ac-item { margin-bottom: 12px; }
+.answer-card .ac-label { font-size: 13px; color: #555; margin-bottom: 5px; }
+.conf-group { display: flex; gap: 10px; flex-wrap: wrap; }
 .conf-opt {
-  padding: 6px 18px; border: 2px solid #d0d0d0; border-radius: 20px; cursor: pointer;
+  padding: 5px 16px; border: 2px solid #d0d0d0; border-radius: 20px; cursor: pointer;
   font-size: 13px; background: #fafafa; transition: all .15s; font-family: inherit;
 }
 .conf-opt:hover { border-color: #4a90d9; }
 .conf-opt.selected { background: #4a90d9; color: #fff; border-color: #4a90d9; }
+.conf-opt.disabled { pointer-events: none; opacity: .7; }
 
-/* 提交页 */
+/* 提交/完成 */
 .submit-area { text-align: center; padding: 30px 0; }
 .submit-area h3 { font-size: 20px; margin-bottom: 10px; }
 .submit-area p { color: #555; font-size: 14px; margin-bottom: 8px; }
@@ -84,9 +89,9 @@ body {
 .big-btn.s1 { background: #4a90d9; }
 .big-btn.s2 { background: #e67e22; }
 .big-btn.s3 { background: #8e44ad; }
-.big-btn.done { background: #52c41a; }
+.big-btn.finish { background: #52c41a; }
+.big-btn:disabled { opacity: .5; cursor: not-allowed; }
 
-/* 结果页 */
 .result-area { padding: 20px 0; }
 .result-area h3 { font-size: 20px; margin-bottom: 14px; text-align: center; }
 .result-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
@@ -115,13 +120,32 @@ body {
 .toast.ok { background: #52c41a; }
 .toast.err { background: #d93025; }
 
+/* 自定义确认弹窗 */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.45); z-index: 400;
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  background: #fff; border-radius: 8px; padding: 26px 30px;
+  width: 90%; max-width: 380px; box-shadow: 0 4px 24px rgba(0,0,0,.25);
+  text-align: center;
+}
+.modal-box .m-title { font-size: 16px; font-weight: bold; margin-bottom: 12px; color: #333; }
+.modal-box .m-msg { font-size: 14px; color: #555; margin-bottom: 22px; white-space: pre-line; line-height: 1.9; }
+.modal-box .m-btns { display: flex; gap: 14px; justify-content: center; }
+.m-btn { padding: 9px 26px; border-radius: 6px; cursor: pointer; font-size: 14px; border: 1px solid #ccc; background: #fff; color: #333; font-family: inherit; }
+.m-btn.primary { background: #4a90d9; color: #fff; border-color: #4a90d9; }
+.m-btn:hover { opacity: .85; }
+
 @media (max-width: 768px) { .paper { padding: 30px 20px; } }
 </style>
 </head>
 <body>
 <div class="app">
   <div class="top-bar">
-    <div><span class="top-title">机械能守恒章节·四阶测试问卷</span></div>
+    <div><span class="top-title">机械能守恒章节测试</span></div>
     <div class="top-section" id="sectionLabel"></div>
     <div class="top-info">
       <span class="student-tag" id="studentInfo"></span>
@@ -136,21 +160,29 @@ body {
   </div>
 </div>
 <div class="toast" id="toast"></div>
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <div class="m-title" id="confirmTitle">确认提交</div>
+    <div class="m-msg" id="confirmMsg"></div>
+    <div class="m-btns">
+      <button class="m-btn" onclick="closeConfirm(false)">取消</button>
+      <button class="m-btn primary" id="confirmOkBtn" onclick="closeConfirm(true)">确认</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ===== 全局状态 =====
 var st = {
   studentName: '', studentId: '', studentDir: '',
-  phase: 1,           // 1=前测, 2=纠错, 3=后测
-  cur: 0,             // 当前页索引
-  pretest: [],        // 前测题目
-  correction: [],     // 第二大题（纠错）
-  posttest: [],       // 后测题目
-  answers: {},        // 答题记录 { qid: {answer, reason, conf1, conf2} }
-  correctionResult: null, // 前测提交后返回的纠错结果
+  phase: 1,           // 1=第一大题, 2=第二大题, 3=第三大题
+  cur: 0,
+  pretest: [], correction: [], posttest: [],
+  answers: {},        // {q0:{answer,reason,conf1,conf2}, c1:{answer}, p0:{...}}
+  submitted: {s1:false, s2:false, s3:false},  // 各大题是否已提交（锁定）
+  finished: false,    // 是否完成测试（全局锁定）
 };
 
-// ===== 读取学生信息 =====
 (function(){
   var p = new URLSearchParams(window.location.search);
   st.studentName = p.get('name') || '';
@@ -160,7 +192,6 @@ var st = {
   if (el && st.studentName) el.textContent = st.studentName + ' | ' + st.studentId;
 })();
 
-// ===== 题目加载 =====
 function loadQuestions(section) {
   return fetch('/api/questions/' + section).then(function(r){ return r.json(); })
     .then(function(d){ return d.questions || []; });
@@ -171,113 +202,108 @@ function init() {
     st.pretest = results[0];
     st.posttest = results[1];
     buildPhase1();
-  }).catch(function(e){
-    toast('题目加载失败，请刷新重试', 'err');
-  });
+  }).catch(function(){ toast('题目加载失败，请刷新重试', 'err'); });
 }
 
 // ===== 页面构建 =====
-var pages = []; // {type, phase, qIndex, ...}
+var pages = [];
 
 function buildPhase1() {
   pages = [];
-  // 封面
-  pages.push({type:'cover', phase:1, title:'第一大题 · 前测', desc:'本大题共10道题，每题包含四部分：答案选择、理由选择、对答案的信心指数、对理由的信心指数。请认真作答。'});
-  // 前测题目（每题一页）
-  st.pretest.forEach(function(q, i){
-    pages.push({type:'question', phase:1, qIndex:i, q:q, sectionName:'第一大题'});
-  });
-  // 提交页
-  pages.push({type:'submit', phase:1, sectionName:'第一大题', btn:'提交第一大题，生成纠错题'});
-  renderAll();
-  showPage(0);
+  pages.push({type:'cover', phase:1, title:'第一大题', desc:'本大题共 10 道题。每题请先选择答案，再选择你的理由，并标注把握程度。'});
+  st.pretest.forEach(function(q, i){ pages.push({type:'question', phase:1, qIndex:i, q:q}); });
+  pages.push({type:'submit', phase:1, sectionName:'第一大题', btnText:'提交第一大题'});
+  renderAll(); showPage(0);
 }
 
-function buildPhase2(correctionQuestions) {
+function buildPhase2(corrQs) {
   pages = [];
-  pages.push({type:'cover', phase:2, title:'第二大题 · 纠错练习', desc:'根据你第一大题的答题情况，系统已为你生成针对性的纠错练习。请认真完成。'});
-  correctionQuestions.forEach(function(q, i){
-    pages.push({type:'correction', phase:2, qIndex:i, q:q, sectionName:'第二大题'});
-  });
-  pages.push({type:'submit', phase:2, sectionName:'第二大题', btn:'提交第二大题'});
-  renderAll();
-  showPage(0);
+  pages.push({type:'cover', phase:2, title:'第二大题', desc:'本大题根据你第一大题的作答情况生成。请认真完成。'});
+  corrQs.forEach(function(q, i){ pages.push({type:'correction', phase:2, qIndex:i, q:q}); });
+  pages.push({type:'submit', phase:2, sectionName:'第二大题', btnText:'提交第二大题'});
+  renderAll(); showPage(0);
 }
 
 function buildPhase3() {
   pages = [];
-  pages.push({type:'cover', phase:3, title:'第三大题 · 后测', desc:'本大题共10道题，用于检测学习后的掌握情况。请认真作答。'});
-  st.posttest.forEach(function(q, i){
-    pages.push({type:'question', phase:3, qIndex:i, q:q, sectionName:'第三大题'});
-  });
-  pages.push({type:'submit', phase:3, sectionName:'第三大题', btn:'提交第三大题，生成诊断报告'});
-  renderAll();
-  showPage(0);
+  pages.push({type:'cover', phase:3, title:'第三大题', desc:'本大题共 10 道题。每题请先选择答案，再选择你的理由，并标注把握程度。'});
+  st.posttest.forEach(function(q, i){ pages.push({type:'question', phase:3, qIndex:i, q:q}); });
+  pages.push({type:'submit', phase:3, sectionName:'第三大题', btnText:'提交第三大题'});
+  renderAll(); showPage(0);
 }
 
-// ===== 渲染 =====
 function renderAll() {
   var html = '';
-  pages.forEach(function(p, i){
-    html += renderPage(p, i);
-  });
+  pages.forEach(function(p, i){ html += renderPage(p, i); });
   document.getElementById('examPaper').innerHTML = html;
   document.getElementById('totalPages').textContent = pages.length;
+  updateSectionLabel();
+}
+
+function updateSectionLabel() {
+  var sn = {1:'第一大题', 2:'第二大题', 3:'第三大题'};
+  var label = sn[st.phase] || '';
+  if (st.finished) label = '测试完成';
+  document.getElementById('sectionLabel').textContent = label;
 }
 
 function renderPage(p, pi) {
   var h = '<div class="pp" id="pp'+pi+'">';
   if (p.type === 'cover') {
-    h += '<div class="cover"><h2>'+p.title+'</h2><div class="sub">'+p.desc+'</div></div>';
+    h += '<div class="cover"><h2>'+p.title+'</h2><div class="sub">'+p.desc+'</div>';
+    h += '<div class="tip">点击下方"下一题"开始作答</div></div>';
   } else if (p.type === 'submit') {
     var cls = p.phase===1?'s1':(p.phase===2?'s2':'s3');
-    h += '<div class="submit-area"><h3>'+p.sectionName+' 答题完毕</h3>';
-    h += '<p>请检查作答，确认无误后提交。</p>';
-    h += '<button class="big-btn '+cls+'" onclick="doSubmit('+p.phase+')">✓ '+p.btn+'</button></div>';
+    h += '<div class="submit-area"><h3>'+p.sectionName+' 作答完毕</h3>';
+    h += '<p>请检查本大题作答，提交后将锁定，无法修改。</p>';
+    h += '<button class="big-btn '+cls+'" onclick="doSubmit('+p.phase+')">✓ '+p.btnText+'</button></div>';
   } else if (p.type === 'question') {
     var q = p.q;
-    // 前测用 'q0'~'q9'，后测用 'p0'~'p9'，避免混淆
     var qid = (p.phase === 1 ? 'q' : 'p') + (q.num - 1);
-    h += '<div class="src">【题目出处】'+q.src+'</div>';
-    h += '<div class="miscon-tag">诊断'+q.miscon+'</div>';
-    h += '<div class="q-num">第'+q.num+'题</div>';
+    var locked = st.submitted['s'+p.phase] || st.finished;
+    var isMultiAnswer = (q.answer_key || '').length > 1;
+    var isMultiReason = (q.reason_key || '').length > 1;
+    h += '<div class="q-num">第'+q.num+'题'+(isMultiAnswer?'（多选）':'')+'</div>';
     h += '<div class="q-stem">'+q.stem+'</div>';
-    // 答案阶
-    h += '<div class="tier-title">【一、答案选择】</div>';
+    // 题目选项
     q.options.forEach(function(opt){
       var key = opt.charAt(0);
-      h += '<div class="opt" id="opt_'+qid+'_'+key+'" onclick="selOpt(\''+qid+'\',\'answer\',\''+key+'\')"><span class="lab">'+key+'</span><span class="txt">'+opt.substring(2)+'</span></div>';
+      h += '<div class="opt'+(locked?' disabled':'')+'" data-multi="'+isMultiAnswer+'" id="opt_'+qid+'_'+key+'" onclick="selOpt(\''+qid+'\',\'answer\',\''+key+'\')"><span class="lab">'+key+'</span><span class="txt">'+opt.substring(2)+'</span></div>';
     });
-    // 理由阶
-    h += '<div class="tier-title">【二、理由选择】</div>';
+    // 答题卡
+    h += '<div class="answer-card">';
+    h += '<div class="ac-title">答题卡</div>';
+    // 1. 答案选择（题目选项已在上面，这里说明）
+    h += '<div class="ac-item"><div class="ac-label">1. 你选择的答案：请在题目选项中点击'+(isMultiAnswer?'（可多选）':'')+'</div></div>';
+    // 2. 理由选择
+    h += '<div class="ac-item"><div class="ac-label">2. 你选择该答案的理由：'+(isMultiReason?'（可多选）':'')+'</div>';
     q.reasons.forEach(function(rs){
       var key = rs.charAt(0);
-      h += '<div class="opt" id="reason_'+qid+'_'+key+'" onclick="selOpt(\''+qid+'\',\'reason\',\''+key+'\')"><span class="lab">'+key+'</span><span class="txt">'+rs.substring(2)+'</span></div>';
-    });
-    // 信心指数
-    h += '<div class="tier-title">【三、信心指数】</div>';
-    h += '<div style="font-size:13px;color:#666;margin-bottom:4px;">（1）对本题【答案选择】的信心指数：</div>';
-    h += '<div class="conf-group">';
-    ['很有信心','一般','没把握'].forEach(function(c){
-      h += '<div class="conf-opt" id="conf1_'+qid+'_'+c+'" onclick="selConf(\''+qid+'\',\'conf1\',\''+c+'\')">'+c+'</div>';
+      h += '<div class="opt'+(locked?' disabled':'')+'" data-multi="'+isMultiReason+'" id="reason_'+qid+'_'+key+'" onclick="selOpt(\''+qid+'\',\'reason\',\''+key+'\')"><span class="lab">'+key+'</span><span class="txt">'+rs.substring(2)+'</span></div>';
     });
     h += '</div>';
-    h += '<div style="font-size:13px;color:#666;margin:10px 0 4px;">（2）对本题【理由选择】的信心指数：</div>';
-    h += '<div class="conf-group">';
-    ['很有信心','一般','没把握'].forEach(function(c){
-      h += '<div class="conf-opt" id="conf2_'+qid+'_'+c+'" onclick="selConf(\''+qid+'\',\'conf2\',\''+c+'\')">'+c+'</div>';
+    // 3. 把握程度（答案）
+    h += '<div class="ac-item"><div class="ac-label">3. 你对所选答案的把握程度：</div><div class="conf-group">';
+    ['很有把握','一般','没把握'].forEach(function(c){
+      h += '<div class="conf-opt'+(locked?' disabled':'')+'" id="conf1_'+qid+'_'+c+'" onclick="selConf(\''+qid+'\',\'conf1\',\''+c+'\')">'+c+'</div>';
     });
+    h += '</div></div>';
+    // 4. 把握程度（理由）
+    h += '<div class="ac-item"><div class="ac-label">4. 你对所选理由的把握程度：</div><div class="conf-group">';
+    ['很有把握','一般','没把握'].forEach(function(c){
+      h += '<div class="conf-opt'+(locked?' disabled':'')+'" id="conf2_'+qid+'_'+c+'" onclick="selConf(\''+qid+'\',\'conf2\',\''+c+'\')">'+c+'</div>';
+    });
+    h += '</div></div>';
     h += '</div>';
   } else if (p.type === 'correction') {
     var q = p.q;
     var qid = 'c' + (p.qIndex+1);
-    h += '<div class="src">【纠错练习】'+q.miscon+' · '+q.name+'</div>';
-    h += '<div class="q-num">纠错题 '+(p.qIndex+1)+'</div>';
+    var locked = st.submitted.s2 || st.finished;
+    h += '<div class="q-num">第 '+(p.qIndex+1)+' 题</div>';
     h += '<div class="q-stem">'+q.stem+'</div>';
-    h += '<div class="tier-title">【答案选择】</div>';
     q.options.forEach(function(opt){
       var key = opt.charAt(0);
-      h += '<div class="opt" id="opt_'+qid+'_'+key+'" onclick="selCorrOpt(\''+qid+'\',\''+key+'\')"><span class="lab">'+key+'</span><span class="txt">'+opt.substring(2)+'</span></div>';
+      h += '<div class="opt'+(locked?' disabled':'')+'" id="opt_'+qid+'_'+key+'" onclick="selCorrOpt(\''+qid+'\',\''+key+'\')"><span class="lab">'+key+'</span><span class="txt">'+opt.substring(2)+'</span></div>';
     });
   }
   h += '</div>';
@@ -286,16 +312,35 @@ function renderPage(p, pi) {
 
 // ===== 交互 =====
 function selOpt(qid, tier, key) {
-  // 清除同tier的选中
   var prefix = tier==='answer'?'opt_':'reason_';
-  var all = document.querySelectorAll('[id^="'+prefix+qid+'_"]');
-  for (var i=0;i<all.length;i++) all[i].classList.remove('selected');
   var el = document.getElementById(prefix+qid+'_'+key);
-  if (el) el.classList.add('selected');
-  if (!st.answers[qid]) st.answers[qid] = {};
-  st.answers[qid][tier] = key;
-}
+  if (!el) return;
+  var isMulti = el.getAttribute('data-multi') === 'true';
 
+  if (isMulti) {
+    // 多选：切换选中状态
+    el.classList.toggle('selected');
+    // 重新收集所有选中的字母（按顺序）
+    var selected = [];
+    var all = document.querySelectorAll('[id^="'+prefix+qid+'_"]');
+    for (var i=0;i<all.length;i++) {
+      if (all[i].classList.contains('selected')) {
+        var id = all[i].id;
+        selected.push(id.substring(id.lastIndexOf('_')+1));
+      }
+    }
+    selected.sort();
+    if (!st.answers[qid]) st.answers[qid] = {};
+    st.answers[qid][tier] = selected.join('');
+  } else {
+    // 单选
+    var all = document.querySelectorAll('[id^="'+prefix+qid+'_"]');
+    for (var i=0;i<all.length;i++) all[i].classList.remove('selected');
+    el.classList.add('selected');
+    if (!st.answers[qid]) st.answers[qid] = {};
+    st.answers[qid][tier] = key;
+  }
+}
 function selConf(qid, tier, val) {
   var prefix = tier+'_'+qid+'_';
   var all = document.querySelectorAll('[id^="'+prefix+'"]');
@@ -305,7 +350,6 @@ function selConf(qid, tier, val) {
   if (!st.answers[qid]) st.answers[qid] = {};
   st.answers[qid][tier] = val;
 }
-
 function selCorrOpt(qid, key) {
   var all = document.querySelectorAll('[id^="opt_'+qid+'_"]');
   for (var i=0;i<all.length;i++) all[i].classList.remove('selected');
@@ -315,7 +359,6 @@ function selCorrOpt(qid, key) {
   st.answers[qid].answer = key;
 }
 
-// ===== 翻页 =====
 function showPage(idx) {
   if (idx < 0 || idx >= pages.length) return;
   st.cur = idx;
@@ -328,87 +371,12 @@ function showPage(idx) {
   document.getElementById('nextBtn').disabled = (idx===pages.length-1);
   var pf = document.getElementById('progressFill');
   pf.style.width = ((idx+1)/pages.length*100)+'%';
-  var sn = {1:'第一大题 · 前测', 2:'第二大题 · 纠错', 3:'第三大题 · 后测'};
-  document.getElementById('sectionLabel').textContent = sn[st.phase] || '';
+  pf.className = 'progress-fill' + (st.phase===2?' s2':(st.phase===3?' s3':''));
   document.querySelector('.content').scrollTop = 0;
 }
-
 function go(d) { showPage(st.cur + d); }
 
-// ===== 提交 =====
-function doSubmit(phase) {
-  if (phase === 1) {
-    // 提交前测，生成第二大题
-    var payload = {
-      studentName: st.studentName, studentId: st.studentId, studentDir: st.studentDir,
-      section: 's1', answers: collectAnswers(1)
-    };
-    fetch('/api/submit/pretest', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
-    }).then(function(r){ return r.json(); }).then(function(d){
-      if (d.success) {
-        st.correctionResult = d.correction;
-        var wrongCount = d.correction ? d.correction.total_wrong : 0;
-        toast('第一大题已提交！检测到 '+wrongCount+' 道错题，正在生成纠错题...', 'ok');
-        // 构建第二大题
-        var cq = d.correction ? d.correction.correction_questions : [];
-        st.correction = cq;
-        st.phase = 2;
-        if (cq.length > 0) {
-          buildPhase2(cq);
-        } else {
-          // 没有错题，直接进入后测
-          toast('全部答对！跳过纠错，进入第三大题', 'ok');
-          st.phase = 3;
-          buildPhase3();
-        }
-      } else {
-        toast('提交失败，请重试', 'err');
-      }
-    }).catch(function(){ toast('提交失败，请检查网络', 'err'); });
-  } else if (phase === 2) {
-    // 提交第二大题
-    var payload2 = {
-      studentName: st.studentName, studentId: st.studentId, studentDir: st.studentDir,
-      section: 's2', answers: collectAnswers(2)
-    };
-    fetch('/api/submit/correction', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(payload2)
-    }).then(function(r){ return r.json(); }).then(function(d){
-      if (d.success) {
-        toast('第二大题已提交！进入第三大题', 'ok');
-        st.phase = 3;
-        buildPhase3();
-      } else {
-        toast('提交失败，请重试', 'err');
-      }
-    }).catch(function(){ toast('提交失败，请检查网络', 'err'); });
-  } else if (phase === 3) {
-    // 提交后测，生成诊断报告
-    var pretestAnswers = collectAnswers(1);
-    var correctionAnswers = collectAnswers(2);
-    var payload3 = {
-      studentName: st.studentName, studentId: st.studentId, studentDir: st.studentDir,
-      section: 's3', answers: collectAnswers(3),
-      pretest_answers: pretestAnswers,
-      correction_answers: correctionAnswers,
-      correction_questions: st.correction
-    };
-    fetch('/api/submit/posttest', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(payload3)
-    }).then(function(r){ return r.json(); }).then(function(d){
-      if (d.success) {
-        showResult(d.report);
-      } else {
-        toast('提交失败，请重试', 'err');
-      }
-    }).catch(function(){ toast('提交失败，请检查网络', 'err'); });
-  }
-}
-
+// ===== 收集答案 =====
 function collectAnswers(phase) {
   var result = {};
   for (var qid in st.answers) {
@@ -419,38 +387,97 @@ function collectAnswers(phase) {
   return result;
 }
 
-function showResult(report) {
-  pages = [];
-  var h = '';
-  h += '<div class="result-area"><h3>答题完成！</h3>';
-  if (report) {
-    h += '<table class="result-table"><tr><th>报告名称</th><th>状态</th></tr>';
-    var items = [
-      ['第一大题（前测）诊断报告', report.pretest],
-      ['第二大题（纠错）诊断报告', report.correction],
-      ['第三大题（后测）诊断报告', report.posttest],
-      ['前后测对比分析报告', report.comparison]
-    ];
-    for (var i=0;i<items.length;i++) {
-      var done = items[i][1] ? true : false;
-      h += '<tr><td>'+items[i][0]+'</td><td>'+(done ? '✓ 已生成' : '—')+'</td></tr>';
-    }
-    h += '</table>';
-    h += '<p style="text-align:center;color:#555;">四份 Word 诊断报告已保存至后台开发空间（student_data/姓名_学号/reports/）</p>';
-  } else {
-    h += '<p style="text-align:center;color:#555;">答题数据已提交至后台开发空间</p>';
+// ===== 提交（带确认框） =====
+function doSubmit(phase) {
+  var secName = ['','第一大题','第二大题','第三大题'][phase];
+  showConfirm('确认提交' + secName + '？\n\n提交后将锁定本大题作答，无法修改。', function(){
+    submitPhase(phase);
+  });
+}
+
+function submitPhase(phase) {
+
+  if (phase === 1) {
+    var payload = {
+      studentName: st.studentName, studentId: st.studentId, studentDir: st.studentDir,
+      section: 's1', answers: collectAnswers(1)
+    };
+    fetch('/api/submit/pretest', {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+    }).then(function(r){ return r.json(); }).then(function(d){
+      if (d.success) {
+        st.submitted.s1 = true;
+        toast('第一大题已提交，正在生成第二大题...', 'ok');
+        st.correction = d.correction ? d.correction.correction_questions : [];
+        st.phase = 2;
+        if (st.correction.length > 0) buildPhase2(st.correction);
+        else { toast('第一大题全部答对，直接进入第三大题', 'ok'); st.phase = 3; buildPhase3(); }
+      } else { toast('提交失败，请重试', 'err'); }
+    }).catch(function(){ toast('提交失败，请检查网络', 'err'); });
+  } else if (phase === 2) {
+    var payload2 = {
+      studentName: st.studentName, studentId: st.studentId, studentDir: st.studentDir,
+      section: 's2', answers: collectAnswers(2), correction_questions: st.correction
+    };
+    fetch('/api/submit/correction', {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload2)
+    }).then(function(r){ return r.json(); }).then(function(d){
+      if (d.success) {
+        st.submitted.s2 = true;
+        toast('第二大题已提交，进入第三大题', 'ok');
+        st.phase = 3;
+        buildPhase3();
+      } else { toast('提交失败，请重试', 'err'); }
+    }).catch(function(){ toast('提交失败，请检查网络', 'err'); });
+  } else if (phase === 3) {
+    var payload3 = {
+      studentName: st.studentName, studentId: st.studentId, studentDir: st.studentDir,
+      section: 's3', answers: collectAnswers(3), pretest_answers: collectAnswers(1)
+    };
+    fetch('/api/submit/posttest', {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload3)
+    }).then(function(r){ return r.json(); }).then(function(d){
+      if (d.success) {
+        st.submitted.s3 = true;
+        st.finished = true;
+        showThankYouPage();
+      } else { toast('提交失败，请重试', 'err'); }
+    }).catch(function(){ toast('提交失败，请检查网络', 'err'); });
   }
+}
+
+// ===== 感谢页（提交第三大题后直接显示） =====
+function showThankYouPage() {
+  pages = [];
+  var h = '<div class="result-area" style="padding:60px 0;"><h3 style="font-size:24px;">测试完成，感谢作答！</h3>';
+  h += '<p style="text-align:center;color:#555;font-size:15px;">本次测试已结束，你可以关闭此页面。</p>';
   h += '</div>';
   document.getElementById('examPaper').innerHTML = '<div class="pp active">'+h+'</div>';
   document.getElementById('totalPages').textContent = 1;
   document.getElementById('currentPage').textContent = 1;
   document.getElementById('prevBtn').disabled = true;
   document.getElementById('nextBtn').disabled = true;
-  document.getElementById('sectionLabel').textContent = '答题完成';
+  document.getElementById('sectionLabel').textContent = '测试完成';
   document.getElementById('progressFill').style.width = '100%';
+  toast('测试已提交，感谢作答', 'ok');
 }
 
-// ===== Toast =====
+// ===== 自定义确认弹窗 =====
+var confirmCallback = null;
+function showConfirm(msg, onConfirm, title) {
+  confirmCallback = onConfirm;
+  document.getElementById('confirmMsg').textContent = msg;
+  document.getElementById('confirmTitle').textContent = title || '确认提交';
+  document.getElementById('confirmOkBtn').textContent = title || '确认';
+  document.getElementById('confirmModal').classList.add('show');
+}
+function closeConfirm(ok) {
+  document.getElementById('confirmModal').classList.remove('show');
+  var cb = confirmCallback;
+  confirmCallback = null;
+  if (ok && cb) cb();
+}
+
 function toast(msg, type) {
   var el = document.getElementById('toast');
   el.textContent = msg;
@@ -458,7 +485,6 @@ function toast(msg, type) {
   setTimeout(function(){ el.classList.remove('show'); }, 3500);
 }
 
-// ===== 启动 =====
 init();
 </script>
 </body>
