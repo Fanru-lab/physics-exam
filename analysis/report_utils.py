@@ -19,9 +19,9 @@ def set_font(run, name='宋体', size=11, bold=False, color=None):
 
 
 def judge_tier_wrong(answer, reason, answer_key, reason_key):
-    """判断四阶题是否答错：答案阶或理由阶任一出错即错"""
-    answer_wrong = (answer != answer_key)
-    reason_wrong = (reason != reason_key)
+    """判断四阶题是否答错：答案阶或理由阶任一出错即错（支持单选/多选）"""
+    answer_wrong = (sorted(answer or '') != sorted(answer_key or ''))
+    reason_wrong = (sorted(reason or '') != sorted(reason_key or ''))
     return {
         'answer_wrong': answer_wrong,
         'reason_wrong': reason_wrong,
