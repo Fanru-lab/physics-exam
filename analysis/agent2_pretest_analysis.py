@@ -69,7 +69,7 @@ def generate_pretest_report(pretest_answers, pretest_questions, student_name, st
         output_dir = os.path.join(BASE_DIR, 'student_data', f'{student_name}_{student_id}', 'reports')
     os.makedirs(output_dir, exist_ok=True)
     ts = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_path = os.path.join(output_dir, f'前测诊断报告_{ts}.docx')
+    output_path = os.path.join(output_dir, '前测诊断报告.docx')
     _build_report('第一大题（前测）诊断报告', student_name, student_id, sections, output_path)
     return output_path
 
