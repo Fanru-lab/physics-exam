@@ -28,9 +28,9 @@ def split_misconceptions(miscon_str):
 
 
 def judge_wrong(answer_choice, reason_choice, answer_key, reason_key):
-    """判断一道题是否答错（答案阶或理由阶任一出错即错）"""
-    answer_wrong = (answer_choice != answer_key)
-    reason_wrong = (reason_choice != reason_key)
+    """判断一道题是否答错（答案阶或理由阶任一出错即错，支持单选/多选）"""
+    answer_wrong = (sorted(answer_choice or '') != sorted(answer_key or ''))
+    reason_wrong = (sorted(reason_choice or '') != sorted(reason_key or ''))
     return {
         'answer_wrong': answer_wrong,
         'reason_wrong': reason_wrong,
