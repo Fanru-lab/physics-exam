@@ -18,7 +18,8 @@
         "D．人对车和车对人是一对作用力与反作用力，大小相等、作用点位移相同，做功的绝对值相等"
       ],
       "answer_key": "AD",
-      "reason_key": "AD"
+      "reason_key": "AD",
+      "image": "pretest_1.png"
     },
     {
       "num": 2,
@@ -38,7 +39,8 @@
         "D．甲、乙两图中F与位移的夹角不同，做功也不同，所以不能确定"
       ],
       "answer_key": "C",
-      "reason_key": "C"
+      "reason_key": "C",
+      "image": "pretest_2.png"
     },
     {
       "num": 3,
@@ -58,7 +60,8 @@
         "D．物块和木板最终相对静止，没有相对位移，摩擦力不做功"
       ],
       "answer_key": "B",
-      "reason_key": "B"
+      "reason_key": "B",
+      "image": "pretest_3.png"
     },
     {
       "num": 4,
@@ -78,7 +81,8 @@
         "D．小球能量的大小只与速度有关，与所在位置的高低无关"
       ],
       "answer_key": "B",
-      "reason_key": "B"
+      "reason_key": "B",
+      "image": "pretest_4.png"
     },
     {
       "num": 5,
@@ -98,7 +102,8 @@
         "D．小球始终沿斜面运动，加速度恒定不变"
       ],
       "answer_key": "C",
-      "reason_key": "C"
+      "reason_key": "C",
+      "image": "pretest_5.png"
     },
     {
       "num": 6,
@@ -118,7 +123,8 @@
         "D．物体下落过程中机械能不断变化，无法确定海平面处的机械能"
       ],
       "answer_key": "BCD",
-      "reason_key": "ABC"
+      "reason_key": "ABC",
+      "image": "pretest_6.png"
     },
     {
       "num": 7,
@@ -138,7 +144,8 @@
         "D．小球下落过程中只有重力作用，没有摩擦，所以小球的机械能不变"
       ],
       "answer_key": "C",
-      "reason_key": "C"
+      "reason_key": "C",
+      "image": "pretest_7.png"
     },
     {
       "num": 8,
@@ -158,7 +165,8 @@
         "D．摩擦生热恒等于mgH，与角度无关"
       ],
       "answer_key": "C",
-      "reason_key": "C"
+      "reason_key": "C",
+      "image": "pretest_8.png"
     },
     {
       "num": 9,
@@ -220,7 +228,8 @@
         "D．从A到C，绳子拉力对小球做正功，使小球速度不断增大"
       ],
       "answer_key": "BD",
-      "reason_key": "AB"
+      "reason_key": "AB",
+      "image": "posttest_1.png"
     },
     {
       "num": 2,
@@ -240,7 +249,8 @@
         "D．变力做功没有方法可求"
       ],
       "answer_key": "B",
-      "reason_key": "B"
+      "reason_key": "B",
+      "image": "posttest_2.png"
     },
     {
       "num": 3,
@@ -260,7 +270,8 @@
         "D．系统产生的内能等于力F做的总功Fx"
       ],
       "answer_key": "ABC",
-      "reason_key": "ABC"
+      "reason_key": "ABC",
+      "image": "posttest_3.png"
     },
     {
       "num": 4,
@@ -280,7 +291,8 @@
         "D．落地过程中重力势能减少10J"
       ],
       "answer_key": "B",
-      "reason_key": "B"
+      "reason_key": "B",
+      "image": "posttest_4.png"
     },
     {
       "num": 5,
@@ -300,7 +312,8 @@
         "D．从B到A重力势能减少量等于动能增加量mv²/2"
       ],
       "answer_key": "ACD",
-      "reason_key": "ACD"
+      "reason_key": "ACD",
+      "image": "posttest_5.png"
     },
     {
       "num": 6,
@@ -320,7 +333,8 @@
         "D．换零势能面后重力势能变化量也会改变"
       ],
       "answer_key": "A",
-      "reason_key": "A"
+      "reason_key": "A",
+      "image": "posttest_6.png"
     },
     {
       "num": 7,
@@ -360,7 +374,8 @@
         "D．2h0~3.5h0阶段动能减小，机械能也减少"
       ],
       "answer_key": "C",
-      "reason_key": "C"
+      "reason_key": "C",
+      "image": "posttest_8.png"
     },
     {
       "num": 9,
