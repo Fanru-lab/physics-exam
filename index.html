@@ -45,6 +45,8 @@ body {
 
 .q-num { font-size: 15px; font-weight: bold; margin-bottom: 8px; }
 .q-stem { margin-bottom: 14px; text-align: justify; font-size: 15px; }
+.q-image { text-align: center; margin: 0 0 14px 0; }
+.q-image img { max-width: 100%; height: auto; border: 1px solid #eee; border-radius: 4px; }
 
 /* 选项 */
 .opt {
@@ -247,6 +249,17 @@ function updateSectionLabel() {
   document.getElementById('sectionLabel').textContent = label;
 }
 
+function renderImages(img) {
+  if (!img) return '';
+  var arr = Array.isArray(img) ? img : [img];
+  var h = '<div class="q-image">';
+  for (var i=0; i<arr.length; i++) {
+    h += '<img src="/static/images/'+arr[i]+'" alt="题目配图">';
+  }
+  h += '</div>';
+  return h;
+}
+
 function renderPage(p, pi) {
   var h = '<div class="pp" id="pp'+pi+'">';
   if (p.type === 'cover') {
@@ -264,6 +277,7 @@ function renderPage(p, pi) {
     var isMultiAnswer = (q.answer_key || '').length > 1;
     var isMultiReason = (q.reason_key || '').length > 1;
     h += '<div class="q-num">第'+q.num+'题'+(isMultiAnswer?'（多选）':'')+'</div>';
+    h += renderImages(q.image);
     h += '<div class="q-stem">'+q.stem+'</div>';
     // 题目选项
     q.options.forEach(function(opt){
@@ -300,6 +314,7 @@ function renderPage(p, pi) {
     var qid = 'c' + (p.qIndex+1);
     var locked = st.submitted.s2 || st.finished;
     h += '<div class="q-num">第 '+(p.qIndex+1)+' 题</div>';
+    h += renderImages(q.image);
     h += '<div class="q-stem">'+q.stem+'</div>';
     q.options.forEach(function(opt){
       var key = opt.charAt(0);
